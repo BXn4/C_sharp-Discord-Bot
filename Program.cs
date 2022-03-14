@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +12,7 @@ using System.IO;
 using System.Reflection;
 using Discord.Audio;
 
-namespace dcbot
+namespace BenCMDSdc
 {
     class Program
     {
@@ -93,5 +93,18 @@ namespace dcbot
                 if (!eredmeny.IsSuccess) Console.WriteLine(eredmeny.ErrorReason);
             }
         }
+        public async Task OnReactionAddedEvent(SocketReaction reaction)
+        {
+            if(reaction.Channel.Id == 950146054689542185)
+            {
+                if(reaction.Emote.Name == "fortnite")
+                {
+                    await (kliens as IGuildUser).AddRoleAsync(950136746341965875);
+
+                }
+            }
+        }
+
+
     }
 }
