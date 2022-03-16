@@ -44,7 +44,31 @@ namespace BenCMDSdc
 
 
         }
-
+        [Command("parancsok")]
+        public async Task parancsok()
+        {
+            await Context.User.SendMessageAsync("```Az alábbi parancsokat tudom: \n .parancsok \n .szia \n .play (youtube link) \n .vc create \n .tc create \n \n \n Frissítve: 2022.03.16 | 16:29```");
+        }
+        [Command("vc create")]
+        public async Task voice_create()
+        {
+            var csatornanev = Context.User.Username;
+            await Context.Guild.CreateVoiceChannelAsync(csatornanev+" csatornája");
+            await ReplyAsync($"Sikeresen létrehoztam a csatornát. A csatorna neve: ```{csatornanev} csatornája. ``` \n További parancsok a csatornához a .voice paranccsal érhetőek el.");
+        }
+        [Command("tc create")]
+        public async Task text_create()
+        {
+            var csatornanev = Context.User.Username;
+            await Context.Guild.CreateTextChannelAsync(csatornanev + " csatornája");
+            await ReplyAsync($"Sikeresen létrehoztam a csatornát. A csatorna neve: ```{csatornanev} csatornája. ``` \n További parancsok a csatornához a .voice paranccsal érhetőek el.");
+        }
+        [Command("vc name")]
+        public async Task voicename()
+        {
+            //var csatornanev = Context.Message.
+            //await Context.Guild.CreateVoiceChannelAsync(csatornanev);
+        }
         [Command("play", RunMode= RunMode.Async)]
         public async Task hang(IVoiceChannel hang = null)
         {
