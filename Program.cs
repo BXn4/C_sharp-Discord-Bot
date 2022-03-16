@@ -23,6 +23,7 @@ namespace BenCMDSdc
         public string prefix = string.Empty;
         public string token = string.Empty;
         public string botneve = string.Empty;
+        int i = 0;
         public struct config
         {
             
@@ -45,6 +46,8 @@ namespace BenCMDSdc
             szolgaltatasok = new ServiceCollection()
                 .AddSingleton(kliens)
                 .AddSingleton(parancsok).BuildServiceProvider();
+            await kliens.SetStatusAsync(UserStatus.Online);
+            await kliens.SetGameAsync(".parancsok || .vc create", "", ActivityType.Watching);
             var config = new config()
             {
                 Token = configjson.Token,
@@ -62,8 +65,6 @@ namespace BenCMDSdc
             await kliens.LoginAsync(TokenType.Bot, token);
             await kliens.StartAsync();
             await Task.Delay(-1);
-         
-
         }
 
         private Task kliens_Log(LogMessage arg)
@@ -93,18 +94,5 @@ namespace BenCMDSdc
                 if (!eredmeny.IsSuccess) Console.WriteLine(eredmeny.ErrorReason);
             }
         }
-        public async Task OnReactionAddedEvent(SocketReaction reaction)
-        {
-            if(reaction.Channel.Id == 950146054689542185)
-            {
-                if(reaction.Emote.Name == "fortnite")
-                {
-                    await (kliens as IGuildUser).AddRoleAsync(950136746341965875);
-
-                }
-            }
-        }
-
-
     }
 }
