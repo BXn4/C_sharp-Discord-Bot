@@ -3,96 +3,150 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Discord;
 using Discord.Commands;
-using Discord.WebSocket;
-using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
-using System.IO;
-using System.Reflection;
+using Discord;
 using Discord.Audio;
+using System.IO;
+using Discord.WebSocket;
 
 namespace BenCMDSdc
 {
-    class Program
+    public class Parancsok : ModuleBase<SocketCommandContext>
     {
-        static void Main(string[] args) => new Program().bot_indit().GetAwaiter().GetResult();
-        private DiscordSocketClient kliens;
-        private CommandService parancsok;
-        private IServiceProvider szolgaltatasok;
-        public string prefix = string.Empty;
-        public string token = string.Empty;
-        public string botneve = string.Empty;
-        int i = 0;
-        public struct config
+        int voicekszama = 0;
+        [Command("szia")]
+        public async Task koszones()
         {
-            
-    [JsonProperty("token")]
-            public string Token { get; set; }
-            [JsonProperty("prefix")]
-            public string Prefix { get; set; }
-            [JsonProperty("botneve")]
-            public string Botneve { get; set; }
+            Emoji integetes = new Emoji("👋");
+            await ReplyAsync($"Helló {Context.Message.Author.Mention}! :wave:");
+            _ = Context.Message.AddReactionAsync(integetes);
         }
-        public async Task bot_indit()
+        [Command("xdrang")]
+        public async Task xdrang()
         {
-            var json = string.Empty;
-            using (var fs = File.OpenRead("config.json"))
-            using (var sr = new StreamReader(fs, new UTF8Encoding(false)))
-            json = await sr.ReadToEndAsync().ConfigureAwait(false);
-            var configjson = JsonConvert.DeserializeObject<config>(json);
-            kliens = new DiscordSocketClient();
-            parancsok = new CommandService();
-            szolgaltatasok = new ServiceCollection()
-                .AddSingleton(kliens)
-                .AddSingleton(parancsok).BuildServiceProvider();
-            await kliens.SetStatusAsync(UserStatus.Online);
-            await kliens.SetGameAsync(".parancsok || .vc create", "", ActivityType.Watching);
-            var config = new config()
+            Emote fortnite = Emote.Parse("<:fortnite:952991572360847420>");
+            Emote lol = Emote.Parse("<:lol:952998853433511986>");
+            Emote osu = Emote.Parse("<:osu:952998814296453221>");
+            Emote pubg = Emote.Parse("<:pubg:952999671612178472>");
+            Emote minecraft = Emote.Parse("<:minecraft:952997746162425886>");
+            Emote mw = Emote.Parse("<:mw:952999071696707715>");
+            Emote roblox = Emote.Parse("<:roblox:953000756255014912>");
+            Emote warthunder = Emote.Parse("<:war_thunder:953000769639030784>");
+            Emote csgo = Emote.Parse("<:csgo:953000789490688090>");
+            var gomb = new ComponentBuilder();
+            string uzenet = $"```Milyen játékokkal szoktál játszani?\n(Reagálj és hozzáférést kapsz a kiválaszott játék csatornájához!).```";
+            var elkuld = await Context.Channel.SendMessageAsync(uzenet);
+            await elkuld.AddReactionAsync(fortnite);
+            await elkuld.AddReactionAsync(lol);
+            await elkuld.AddReactionAsync(minecraft);
+            await elkuld.AddReactionAsync(roblox);
+            await elkuld.AddReactionAsync(mw);
+            await elkuld.AddReactionAsync(csgo);
+            await elkuld.AddReactionAsync(pubg);
+            await elkuld.AddReactionAsync(osu);
+            await elkuld.AddReactionAsync(warthunder);
+
+
+        }
+        [Command("parancsok")]
+        public async Task parancsok()
+        {
+            await Context.User.SendMessageAsync(">>> **Hangcsatornák:**\n`.vc create\n.vc delete\nés még stb... `\n\n**Szöveges csatornák:**\n`.tc create\n.tc del\nés még stb... `\n\n**FUN parancsok:**\n`.szia ` \n\n `Frissítve: 2022.03.17 || 18:54`");
+        }
+        [Command("vc create")]
+        public async Task voice_create()
+        {
+            //File.AppendAllText("voicek.txt", $"{Context.User.Username},{voicekszama}\n");
+            //List<adatok> lista = new List<adatok>();
+            /*foreach (var item in File.ReadAllLines("voicek.txt"))
             {
-                Token = configjson.Token,
-                Prefix = configjson.Prefix,
-                Botneve = configjson.Botneve
-
-            };
-            prefix = config.Prefix;
-            token = config.Token;
-            botneve = config.Botneve;
-            Console.WriteLine($"A {botneve} éppen indul. A parancsok használatához használd a: {prefix} karaktert a parancs elején.");
-            //Console.ReadKey();
-            kliens.Log += kliens_Log;
-            await parancsokregisztral();
-            await kliens.LoginAsync(TokenType.Bot, token);
-            await kliens.StartAsync();
-            await Task.Delay(-1);
-        }
-
-        private Task kliens_Log(LogMessage arg)
-        {
-            Console.WriteLine(arg);
-            return Task.CompletedTask;
-        }
-
-        public async Task parancsokregisztral()
-        {
-            kliens.MessageReceived += parancsasyncs;
-            await parancsok.AddModulesAsync(Assembly.GetEntryAssembly(), szolgaltatasok);
-        }
-
-        private async Task parancsasyncs(SocketMessage arg)
-        {
-            var uzenet = arg as SocketUserMessage;
-            var context = new SocketCommandContext(kliens, uzenet);
-            if(uzenet.Author.IsBot)
-            {
-                return;
+                adatok adatok = new adatok(item);
+                lista.Add(adatok);
+                if(Context.User.Username == adatok.nevtxt)
+                {
+                    voicekszama = adatok.voicektxt;
+                    if(voicekszama == 0)
+                    {
+                        voicekszama++;
+                        File.AppendAllText("voicek.txt", $"{Context.User.Username},{voicekszama}\n");
+                        var csatornanev = Context.User.Username;
+                        await Context.Guild.CreateVoiceChannelAsync(csatornanev + " csatornája");
+                        await ReplyAsync($"Sikeresen létrehoztam a csatornát. A csatorna neve: ```{ csatornanev} csatornája```\n További parancsok a csatornához a .voice paranccsal érhetőek el.");
+                    }
+                    else
+                    {
+                        var csatornanev = Context.User.Username;
+                        await ReplyAsync($"Ajaj! Neked már van voice csatornád a szerveren. A csatornád neve ```{csatornanev} csatornája```. Ha törölni szeretnéd, akkor használd a ```.vc del``` parancsot!");
+                    }
+                }
+                
             }
-            int argx = 0;
-            if(uzenet.HasStringPrefix(prefix, ref argx))
+            */
+            var csatorna = Context.Guild.Channels.SingleOrDefault(x => x.Name == Context.User.Username +" csatornája");
+            if (csatorna == null)
             {
-                var eredmeny = await parancsok.ExecuteAsync(context, argx, szolgaltatasok);
-                if (!eredmeny.IsSuccess) Console.WriteLine(eredmeny.ErrorReason);
+                var csatornanev = Context.User.Username;
+                await Context.Guild.CreateVoiceChannelAsync(csatornanev + " csatornája");
+                await ReplyAsync($">>> :white_check_mark: {Context.Message.Author.Mention}```Sikeresen létrehoztam a csatornát.\nA csatorna neve: {csatornanev} csatornája.\nTovábbi parancsok a csatornához a [.voice] paranccsal érhetőek el. ```");
+            }
+            else
+            {
+                var csatornanev = Context.User.Username;
+                await ReplyAsync($">>> :bangbang: {Context.Message.Author.Mention}```Neked már van csatornád.\nA csatornád neve: {csatorna}.\nHa törölni szeretnéd, akkor használd a [.vc del] parancsot!```");
+            }
+
+        }
+        [Command("vc del")]
+        public async Task voice_delete()
+        {
+            var csatorna = Context.Guild.Channels.SingleOrDefault(x => x.Name == Context.User.Username + " csatornája");
+            SocketGuildChannel sgc = csatorna;
+            if (csatorna != null)
+            {
+                await ReplyAsync($">>> :ok_hand: {Context.Message.Author.Mention}```Sikeresen töröltem a {csatorna} nevű csatornát.```");
+                _ = sgc.DeleteAsync(); 
             }
         }
-    }
+        [Command("tc create")]
+        public async Task text_create()
+        {
+            var csatorna = Context.Guild.Channels.SingleOrDefault(x => x.Name == Context.User.Username + "-szöveges-csatornája");
+            if (csatorna == null)
+            {
+                var csatornanev = Context.User.Username;
+                await Context.Guild.CreateTextChannelAsync(csatornanev + "-szöveges-csatornája");
+                await ReplyAsync($">>> :white_check_mark: {Context.Message.Author.Mention}```Sikeresen létrehoztam a szöveges csatornát.\nA csatorna neve: {csatornanev}-szöveges-csatornája.\nTovábbi parancsok a csatornához a [.text] paranccsal érhetőek el. ```");
+            }
+            else
+            {
+                var csatornanev = Context.User.Username;
+                await ReplyAsync($">>> :bangbang: {Context.Message.Author.Mention}```Neked már van szöveges csatornád.\nA csatornád neve: {csatorna}.\nHa törölni szeretnéd, akkor használd a [.tc del] parancsot!```");
+            }
+
+        }
+        [Command("tc del")]
+        public async Task text_delete()
+        {
+            var csatorna = Context.Guild.Channels.SingleOrDefault(x => x.Name == Context.User.Username + "-szöveges-csatornája");
+            SocketGuildChannel sgc = csatorna;
+            if (csatorna != null)
+            {
+                await ReplyAsync($">>> :ok_hand: {Context.Message.Author.Mention}```Sikeresen töröltem a {csatorna} nevű szöveges csatornát.```");
+                _ = sgc.DeleteAsync();
+            }
+        }
+        [Command("play", RunMode= RunMode.Async)]
+        public async Task hang(IVoiceChannel hang = null)
+        {
+            hang = hang ?? (Context.User as IGuildUser)?.VoiceChannel;
+            if (hang == null)
+            {
+                await Context.Channel.SendMessageAsync("```Ajjaj! Ahhoz, hogy csatlakozni tudjak a hang csatornához, ahhoz bent kell lenned egy audiócsatornában. Csatlakozz az egyikbe, majd használd újra a parancsot!```");
+            }
+
+            var hangkliens = await hang.ConnectAsync();
+        }
+    
+    } 
+
 }
