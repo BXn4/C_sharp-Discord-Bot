@@ -128,7 +128,7 @@ namespace BenCMDSdc
             {
                 i = 0;
             }
-            Console.WriteLine(i);
+            //Console.WriteLine(i);
         }
     }
 }
