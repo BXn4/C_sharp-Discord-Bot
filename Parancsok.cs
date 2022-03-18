@@ -138,21 +138,7 @@ namespace BenCMDSdc
                 _ = sgc.DeleteAsync();
             }
         }
-        
-        [Command("uwu")]
-        public async Task uwu()
-        {
-            Random uwu = new Random();
-            int uwus = uwu.Next(1, 100);
-            if (Context.Message.Author.Username == "kaka89")
-            {
-                await ReplyAsync($">>> :regional_indicator_u: :regional_indicator_w: :regional_indicator_u:\n {Context.Message.Author.Mention} 100%-ban uwu :):3");
-            }
-            else
-            {
-                await ReplyAsync($">>> :regional_indicator_u: :regional_indicator_w: :regional_indicator_u:\n {Context.Message.Author.Mention} {uwus}%-ban uwu :):3");
-            }
-        }
+
         [Command("szam")]
         public async Task szamkitalalo()
         {
