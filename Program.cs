@@ -53,7 +53,7 @@ namespace BenCMDSdc
             await kliens.SetGameAsync("Elakadtál? .parancsok", "", ActivityType.Watching);
             System.Timers.Timer statusztimer = new System.Timers.Timer();
             statusztimer.Elapsed += new ElapsedEventHandler(statusztimertick);
-            statusztimer.Interval = 10000;
+            statusztimer.Interval = 50000;
             statusztimer.Enabled = true;
             var config = new config()
             {
@@ -100,7 +100,40 @@ namespace BenCMDSdc
                 var eredmeny = await parancsok.ExecuteAsync(context, argx, szolgaltatasok);
                 if (!eredmeny.IsSuccess) Console.WriteLine(eredmeny.ErrorReason);
             }
+            string szoveg = context.Message.Content;
+            string masodikresz = context.Message.Content;
+            string[] tomb = szoveg.Split(' ');
+            string parancs = tomb[0];
+            if (parancs == ".in")
+            {
+                try
+                {
+                    masodikresz = tomb[1];
+                    Random i = new Random();
+                    int ii = i.Next(1, 20);
+                    if (ii <= 10)
+                    {
+                        await arg.Channel.SendMessageAsync($">>> Nem");
+                    }
+                    else
+                    {
+                        await arg.Channel.SendMessageAsync($">>> Igen");
+                    }
+                    
+                }
+               
+                catch
+                {
+
+                }
+                if (szoveg == ".in")
+                {
+                    await context.Channel.SendMessageAsync(">>> Helytelen használat! \n .in [szöveg]");
+                }
+            }
+
         }
+
         private void statusztimertick(object source, ElapsedEventArgs e)
         {
             i++;
@@ -128,7 +161,6 @@ namespace BenCMDSdc
             {
                 i = 0;
             }
-            //Console.WriteLine(i);
         }
     }
 }
