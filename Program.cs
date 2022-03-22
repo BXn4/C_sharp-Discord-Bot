@@ -113,7 +113,7 @@ namespace BenCMDSdc
                     List<string> szamok = new List<string>();
                     for (int i = 0; i < int.Parse(masodikresz); i++)
                     {
-                        int dobottszam = r.Next(1, 6);
+                        int dobottszam = r.Next(1, 7);
                         szamok.Add(dobottszam.ToString());
                     }
                     if (int.Parse(masodikresz) > 10)
