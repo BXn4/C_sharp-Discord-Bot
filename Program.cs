@@ -104,6 +104,34 @@ namespace BenCMDSdc
             string masodikresz = context.Message.Content;
             string[] tomb = szoveg.Split(' ');
             string parancs = tomb[0];
+            if (parancs == ".kocka")
+            {
+                try
+                {
+                    masodikresz = tomb[1];
+                    Random r = new Random();
+                    List<string> szamok = new List<string>();
+                    for (int i = 0; i < int.Parse(masodikresz); i++)
+                    {
+                        int dobottszam = r.Next(1, 6);
+                        szamok.Add(dobottszam.ToString());
+                    }
+                    if (int.Parse(masodikresz) > 10)
+                    {
+                        context.Channel.SendMessageAsync(">>> A dobások száma maximum 10 lehet!");
+                    }
+                    else
+                    {
+                        context.Channel.SendMessageAsync($">>> :game_die:\nA dobott számod:  **{string.Join(", ", szamok)}**\nA dobások száma: {masodikresz}");
+                    }
+                }
+                catch
+                {
+
+                }
+
+
+            }
             if (parancs == ".in")
             {
                 try
@@ -119,19 +147,44 @@ namespace BenCMDSdc
                     {
                         await arg.Channel.SendMessageAsync($">>> Igen");
                     }
-                    
+
                 }
-               
                 catch
                 {
 
                 }
-                if (szoveg == ".in")
+            }
+            if (parancs == ".kocka")
+            {
+                try
                 {
-                    await context.Channel.SendMessageAsync(">>> Helytelen használat! \n .in [szöveg]");
+                    masodikresz = tomb[1];
+                    Random i = new Random();
+                    int dobas = i.Next(1, 6);
+                    string kihivott = string.Empty;
+                    string kihivastkezdte = string.Empty;
+                    string user = string.Empty;
+                    if (masodikresz.Length != 0 && masodikresz.Contains("@"))
+                    {
+                        File.WriteAllText("kockakihivas.txt", $"{context.Message.Author.Username},{masodikresz}");
+                        List<adatok> lista = new List<adatok>();
+                        foreach (var item in File.ReadAllLines("kickakihivas.txt"))
+                        {
+                            adatok Adatok = new adatok(item);
+                            lista.Add(Adatok);
+                            kihivott = Adatok.kihivott;
+                            kihivastkezdte = Adatok.elso;
+                            user = $"@{context.Message.Author.Username}";
+                        }
+                        await context.Channel.SendMessageAsync($">>> :game_die:\nSikeresen kihívtad {masodikresz}-t.\n A te dobásod: {dobas}\nVárom {masodikresz} dobását.");
+                        await context.Channel.SendMessageAsync($"{kihivastkezdte}, {masodikresz}");
+                    }
+                }
+                catch
+                {
+
                 }
             }
-
         }
 
         private void statusztimertick(object source, ElapsedEventArgs e)
