@@ -309,11 +309,40 @@ namespace BenCMDSdc
 
             var hangkliens = await hang.ConnectAsync();
         }
-        [Command("kitty")]
+                [Command("kitty")]
         public async Task kitty()
         {
             Random random = new Random();
-            var macskak = new List<string> { "https://tenor.com/view/spank-playful-naughty-punish-peach-gif-24889588", "https://tenor.com/view/mybc-gif-24798373", "https://tenor.com/view/i-love-you-i-love-you-cats-mimi-and-nini-mimi-nini-gif-24179109", "https://tenor.com/view/cat-couple-cute-cats-cutecatz-kitten-kitty-gif-24960285", "https://tenor.com/view/lovely-cats-love-gif-24382294", "https://tenor.com/view/love-you-gif-24110607", "https://tenor.com/view/chibi-cat-mochi-cat-white-cat-mushy-cat-gif-23262671", "https://tenor.com/view/ep00000-gif-23806371", "https://tenor.com/view/love-smile-cute-heart-cat-gif-14227022", "https://tenor.com/view/michania-kiss-gif-18239933", "https://tenor.com/view/kissykissy-gif-22862612", "https://tenor.com/view/angry-gif-22727983", "https://tenor.com/view/peach-cat-cute-love-kitty-cheeks-gif-16674458", "https://tenor.com/view/cat-i-love-you-in-love-gif-14227400", "https://tenor.com/view/peach-cat-love-heart-peach-goma-gif-21391580", "https://tenor.com/view/love-cute-cat-hearts-heart-gif-22525476", "https://tenor.com/view/mochi-kiss-hugging-gif-18767647", "https://tenor.com/view/kiss-cute-love-hearts-in-love-gif-17144406", "https://tenor.com/view/mochi-cat-peach-gif-22105225", "https://tenor.com/view/line-friends-heart-love-gif-15200244", "https://tenor.com/view/love-peach-peach-cat-goma-peach-and-goma-gif-21391640", "https://tenor.com/view/cuddle-cute-gif-22281908", "https://tenor.com/view/peach-goma-sleep-cat-hug-gif-22623144", "https://tenor.com/view/massage-cat-peachgoma-cute-heart-love-gif-16766413", "https://tenor.com/view/peachcat-cat-cats-kittens-kitties-gif-13806526", "https://tenor.com/view/mochi-cat-vans-gif-21784258", "https://tenor.com/view/peach-goma-love-cute-mochi-gif-22688247", "https://tenor.com/view/peach-and-goma-kiss-peachcute-gif-22217201", "https://tenor.com/view/were-a-purrrfect-fit-love-couple-cat-heart-gif-16808492", "https://tenor.com/view/yay-love-loving-couple-mochi-gif-21239963" };
+            var macskak = new List<string> { "https://tenor.com/view/spank-playful-naughty-punish-peach-gif-24889588",
+                "https://tenor.com/view/mybc-gif-24798373",
+                "https://tenor.com/view/i-love-you-i-love-you-cats-mimi-and-nini-mimi-nini-gif-24179109",
+                "https://tenor.com/view/cat-couple-cute-cats-cutecatz-kitten-kitty-gif-24960285",
+                "https://tenor.com/view/lovely-cats-love-gif-24382294",
+                "https://tenor.com/view/love-you-gif-24110607",
+                "https://tenor.com/view/chibi-cat-mochi-cat-white-cat-mushy-cat-gif-23262671",
+                "https://tenor.com/view/ep00000-gif-23806371",
+                "https://tenor.com/view/love-smile-cute-heart-cat-gif-14227022",
+                "https://tenor.com/view/michania-kiss-gif-18239933",
+                "https://tenor.com/view/kissykissy-gif-22862612",
+                "https://tenor.com/view/angry-gif-22727983",
+                "https://tenor.com/view/peach-cat-cute-love-kitty-cheeks-gif-16674458",
+                "https://tenor.com/view/cat-i-love-you-in-love-gif-14227400",
+                "https://tenor.com/view/peach-cat-love-heart-peach-goma-gif-21391580",
+                "https://tenor.com/view/love-cute-cat-hearts-heart-gif-22525476",
+                "https://tenor.com/view/mochi-kiss-hugging-gif-18767647",
+                "https://tenor.com/view/kiss-cute-love-hearts-in-love-gif-17144406",
+                "https://tenor.com/view/mochi-cat-peach-gif-22105225",
+                "https://tenor.com/view/line-friends-heart-love-gif-15200244",
+                "https://tenor.com/view/love-peach-peach-cat-goma-peach-and-goma-gif-21391640",
+                "https://tenor.com/view/cuddle-cute-gif-22281908",
+                "https://tenor.com/view/peach-goma-sleep-cat-hug-gif-22623144",
+                "https://tenor.com/view/massage-cat-peachgoma-cute-heart-love-gif-16766413",
+                "https://tenor.com/view/peachcat-cat-cats-kittens-kitties-gif-13806526",
+                "https://tenor.com/view/mochi-cat-vans-gif-21784258",
+                "https://tenor.com/view/peach-goma-love-cute-mochi-gif-22688247",
+                "https://tenor.com/view/peach-and-goma-kiss-peachcute-gif-22217201",
+                "https://tenor.com/view/were-a-purrrfect-fit-love-couple-cat-heart-gif-16808492",
+                "https://tenor.com/view/yay-love-loving-couple-mochi-gif-21239963" };
             int gifszam = random.Next(macskak.Count);
             string macskagif = (macskak[gifszam]);
             await Context.Channel.SendMessageAsync(macskagif);
