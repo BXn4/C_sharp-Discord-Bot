@@ -233,27 +233,7 @@ namespace BenCMDSdc
         }
         #endregion
         // // // // // // //
-
-        [Command("uwu")]
-        public async Task uwu()
-        {
-             Random uwu = new Random();
-             int uwus = uwu.Next(1, 100);
-             if (Context.Message.Author.Username == "kaka89")
-             {
-                 await ReplyAsync($">>> :regional_indicator_u: :regional_indicator_w: :regional_indicator_u:\n {Context.Message.Author.Mention} 101%-ban uwu :):3");
-             }
-             else
-             {
-                 await ReplyAsync($">>> :regional_indicator_u: :regional_indicator_w: :regional_indicator_u:\n {Context.Message.Author.Mention} {uwus}%-ban uwu :):3");
-             } 
-        }
-
-        [Command("szeretlek")]
-        public async Task asd()
-        {
-            System.Diagnostics.Process.Start("https://www.youtube.com/watch?v=dQw4w9WgXcQ%22");
-        }
+        
         // // // // // // //
         #region meme
         [Command("meme")]
