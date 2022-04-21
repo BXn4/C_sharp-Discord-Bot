@@ -6,12 +6,14 @@ using Discord.Commands;
 using Discord;
 using Discord.WebSocket;
 using System.Drawing;
-
+using Discord.Audio;
+using System.Diagnostics;
 
 namespace BenCMDSdc
 {
     public class Parancsok : ModuleBase<SocketCommandContext>
     {
+
         // // // // // // //
         #region koszones
         [Command("szia")]
@@ -173,7 +175,7 @@ namespace BenCMDSdc
                 kesz.WithAuthor(Context.Message.Author);
                 await Context.Channel.SendMessageAsync("", false, kesz.Build());
                 _ = sgc.DeleteAsync();
-                
+
             }
         }
         #endregion
@@ -233,8 +235,27 @@ namespace BenCMDSdc
         }
         #endregion
         // // // // // // //
-        
+
+        [Command("meno")]
+        public async Task meno()
+        {
+            Random meno = new Random();
+            int menos = meno.Next(1, 100);
+            await ReplyAsync($">>> {Context.Message.Author.Mention} {menos}%-ban menő :sunglasses:");
+        }
+
+        [Command("rick")]
+        public async Task asd()
+        {
+            //System.Diagnostics.Process.Start("https://www.youtube.com/watch?v=dQw4w9WgXcQ%22");
+        }
         // // // // // // //
+        [Command("pubg")]
+        public async Task pubgxd()
+        {
+            //System.Diagnostics.Process.Start("steam://rungameid/578080");
+            //await Context.Channel.SendMessageAsync("Elindítottam a pubg-t tesó");
+        }
         #region meme
         [Command("meme")]
         public async Task meme()
@@ -258,16 +279,16 @@ namespace BenCMDSdc
                 var elsomeme = new List<string> { "Youtube", "Fortnite", "Játszás", "NFTK", "TikTok", "Videa", "Netflix" };
                 var masodikmeme = new List<string> { "TikTok", "Minecraft", "Iskola", "Bitcoin", "Youtube", "Netflix", "Alvás" };
                 int i = memerandom.Next(elsomeme.Count);
-            elsoszoveg = (elsomeme[i]);
-            masodikszoveg = (masodikmeme[i]);
-           }
+                elsoszoveg = (elsomeme[i]);
+                masodikszoveg = (masodikmeme[i]);
+            }
             if (memeszam == 2)
             {
                 elsohely = new PointF(230f, 380f);
                 masodikhely = new PointF(520f, 375f);
                 felhaszhely = new PointF(30f, 150f);
                 kephelye = @"C:\Users\BencePC\source\repos\BenCMDSdc\BenCMDSdc\bin\Debug\kepek\meme2.jfif";
-                var elsomeme = new List<string> { "\nKoronavírus","Random\nkisgyerek","Matek\ndolgozat","Alkoholmen-\ntes sör","\nMiki egér", "1 éves romlott\nmekis sajtburesz" };
+                var elsomeme = new List<string> { "\nKoronavírus", "Random\nkisgyerek", "Matek\ndolgozat", "Alkoholmen-\ntes sör", "\nMiki egér", "1 éves romlott\nmekis sajtburesz" };
                 string masodikmeme = Context.User.Username;
                 int i = memerandom.Next(elsomeme.Count);
                 elsoszoveg = (elsomeme[i]);
@@ -295,21 +316,7 @@ namespace BenCMDSdc
         }
         #endregion
         // // // // // // //
-
-        // // // // // // //
-        #region test
-        [Command("play", RunMode = RunMode.Async)]
-        public async Task hang(IVoiceChannel hang = null)
-        {
-            hang = hang ?? (Context.User as IGuildUser)?.VoiceChannel;
-            if (hang == null)
-            {
-                await Context.Channel.SendMessageAsync("```Ajjaj! Ahhoz, hogy csatlakozni tudjak a hang csatornához, ahhoz bent kell lenned egy audiócsatornában. Csatlakozz az egyikbe, majd használd újra a parancsot!```");
-            }
-
-            var hangkliens = await hang.ConnectAsync();
-        }
-                [Command("kitty")]
+        [Command("kitty")]
         public async Task kitty()
         {
             Random random = new Random();
@@ -347,6 +354,19 @@ namespace BenCMDSdc
             string macskagif = (macskak[gifszam]);
             await Context.Channel.SendMessageAsync(macskagif);
         }
+        // // // // // // //
+        #region test
+        /*[Command("play", RunMode = RunMode.Async)]
+        public async Task hang(IVoiceChannel hang = null)
+        {
+            hang = hang ?? (Context.User as IGuildUser)?.VoiceChannel;
+            if (hang == null)
+            {
+                await Context.Channel.SendMessageAsync("```Ajjaj! Ahhoz, hogy csatlakozni tudjak a hang csatornához, ahhoz bent kell lenned egy audiócsatornában. Csatlakozz az egyikbe, majd használd újra a parancsot!```");
+            }
+
+            var hangkliens = await hang.ConnectAsync();
+        } */
         //File.AppendAllText("voicek.txt", $"{Context.User.Username},{voicekszama}\n");
         //List<adatok> lista = new List<adatok>();
         /*foreach (var item in File.ReadAllLines("voicek.txt"))
@@ -375,5 +395,7 @@ namespace BenCMDSdc
         */
         #endregion
         // // // // // // //
+
     }
 }
+
