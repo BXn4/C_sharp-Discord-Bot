@@ -13,6 +13,7 @@ using System.Reflection;
 using Discord.Audio;
 using System.Threading;
 using System.Timers;
+using System.Diagnostics;
 
 namespace BenCMDSdc
 {
@@ -48,7 +49,8 @@ namespace BenCMDSdc
             parancsok = new CommandService();
             szolgaltatasok = new ServiceCollection()
                 .AddSingleton(kliens)
-                .AddSingleton(parancsok).BuildServiceProvider();
+                .AddSingleton(new AudioService())
+                .AddSingleton(parancsok).BuildServiceProvider();    
             await kliens.SetStatusAsync(UserStatus.Online);
             await kliens.SetGameAsync("Elakadtál? .parancsok", "", ActivityType.Watching);
             System.Timers.Timer statusztimer = new System.Timers.Timer();
@@ -85,7 +87,6 @@ namespace BenCMDSdc
             kliens.MessageReceived += parancsasyncs;
             await parancsok.AddModulesAsync(Assembly.GetEntryAssembly(), szolgaltatasok);
         }
-
         private async Task parancsasyncs(SocketMessage arg)
         {
             var uzenet = arg as SocketUserMessage;
@@ -102,8 +103,43 @@ namespace BenCMDSdc
             }
             string szoveg = context.Message.Content;
             string masodikresz = context.Message.Content;
+            string elsoszam = context.Message.Content;
+            string muvelet = context.Message.Content;
+            string masodikszam = context.Message.Content;
             string[] tomb = szoveg.Split(' ');
             string parancs = tomb[0];
+            EmbedBuilder eb = new EmbedBuilder();
+            if(parancs == ".calc")
+            {
+                try
+                {
+                    elsoszam = tomb[1];
+                    muvelet = tomb[2];
+                    masodikszam = tomb[3];
+                    if(muvelet == "+")
+                    {
+                        await context.Channel.SendMessageAsync($"{Convert.ToInt32(elsoszam)} {muvelet} {Convert.ToInt32(masodikszam)} = {Convert.ToInt32(elsoszam) + Convert.ToInt32(masodikszam)}");
+                    }
+                    if (muvelet == "-")
+                    {
+                        await context.Channel.SendMessageAsync($"{Convert.ToInt32(elsoszam)} {muvelet} {Convert.ToInt32(masodikszam)} = {Convert.ToInt32(elsoszam) - Convert.ToInt32(masodikszam)}");
+                    }
+                    if (muvelet == "/")
+                    {
+                        await context.Channel.SendMessageAsync($"{Convert.ToInt32(elsoszam)} {muvelet} {Convert.ToInt32(masodikszam)} = {Convert.ToInt32(elsoszam) / Convert.ToInt32(masodikszam)}");
+                    }
+                    if (muvelet == "*")
+                    {
+                        await context.Channel.SendMessageAsync($"{Convert.ToInt32(elsoszam)} {muvelet} {Convert.ToInt32(masodikszam)} = {Convert.ToInt32(elsoszam) * Convert.ToInt32(masodikszam)}");
+                    }
+                    if (muvelet == "x")
+                    {
+                        await context.Channel.SendMessageAsync($"{Convert.ToInt32(elsoszam)} {muvelet} {Convert.ToInt32(masodikszam)} = {Convert.ToInt32(elsoszam) * Convert.ToInt32(masodikszam)}");
+                    }
+                }
+                catch
+                { }
+            }
             if (parancs == ".kocka")
             {
                 try
@@ -118,19 +154,54 @@ namespace BenCMDSdc
                     }
                     if (int.Parse(masodikresz) > 10)
                     {
-                        context.Channel.SendMessageAsync(">>> A dobások száma maximum 10 lehet!");
+                        eb.WithColor(Discord.Color.Red);
+                        eb.WithAuthor(context.Message.Author);
+                        eb.AddField(":game_die: Hiba!", "A dobások száma maximum 10 lehet!", false);
+                        await context.Channel.SendMessageAsync("", false, eb.Build());
+                    }
+                    else if (int.Parse(masodikresz) == 1)
+                    {
+                        eb.WithAuthor(context.Message.Author);
+                        eb.WithColor(Discord.Color.Green);
+                        eb.AddField($":game_die: A dobott számod: **{string.Join(", ", szamok)}**", $"Dobások száma: {masodikresz}", false);
+                        await context.Channel.SendMessageAsync("", false, eb.Build());
                     }
                     else
                     {
-                        context.Channel.SendMessageAsync($">>> :game_die:\nA dobott számod:  **{string.Join(", ", szamok)}**\nA dobások száma: {masodikresz}");
+                        eb.WithAuthor(context.Message.Author);
+                        eb.WithColor(Discord.Color.Green);
+                        eb.AddField($":game_die: A dobott számaid: **{string.Join(", ", szamok)}**", $"Dobások száma: {masodikresz}", false);
+                        await context.Channel.SendMessageAsync("", false, eb.Build());
                     }
                 }
                 catch
                 {
 
                 }
+            }
+            if (parancs == ".meno")
+            {
+                try
+                {
+                    masodikresz = tomb[1];
+                    Random meno = new Random();
+                    int menos = meno.Next(1, 100);
+                    //bool ures = string.IsNullOrEmpty(masodikresz);
+                    if (szoveg == ".meno <@!790265348053532732>")
+                    {
+                        _ = context.Message.Channel.SendMessageAsync($">>> {masodikresz} 100%-ban menő :sunglasses:");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"{masodikresz}");
+                        _ = context.Message.Channel.SendMessageAsync($">>> {masodikresz} {menos}%-ban menő :sunglasses:");
+                    }
 
+                }
+                catch
+                {
 
+                }
             }
             if (parancs == ".in")
             {
@@ -160,7 +231,7 @@ namespace BenCMDSdc
                 {
                     masodikresz = tomb[1];
                     Random i = new Random();
-                    int dobas = i.Next(1, 6);
+                    int dobas = i.Next(1, 7);
                     string kihivott = string.Empty;
                     string kihivastkezdte = string.Empty;
                     string user = string.Empty;
@@ -184,7 +255,8 @@ namespace BenCMDSdc
                 {
 
                 }
-            }
+
+            }  
         }
 
         private void statusztimertick(object source, ElapsedEventArgs e)
